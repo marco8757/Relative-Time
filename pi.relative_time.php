@@ -4,7 +4,7 @@
 $plugin_info = array(
     'pi_name'           => 'Relative Time',
     'pi_version'        => '1.0',
-    'pi_author'         => 'Marco',
+    'pi_author'         => 'Lim Choon Yun (Marco)',
     'pi_author_url'     => 'https://github.com/marco8757',
     'pi_description'    => 'Parse relative date of ExpressionEngine to multilingual.',
     // 'pi_usage'          => RelativeTime::usage()
@@ -165,13 +165,81 @@ class Relative_time
         ''=>''
     );
 
+    public $lang_zh = array(
+        'singular' => '一',
+        'one' => '一',
+        'less_than' => '少於',
+        'about' => '大約',
+        'future' => '后',
+        'ago' => '前',
+        'year' => '年',
+        'years' => '年',
+        'month' => '月',
+        'months' => '月',
+        'fortnight' => '两个星期',
+        'fortnights' => '两个星期',
+        'week' => '星期',
+        'weeks' => '星期',
+        'day' => '天',
+        'days' => '天',
+        'hour' => '小时',
+        'hours' => '小时',
+        'minute' => '分钟',
+        'minutes' => '分钟',
+        'second' => '秒',
+        'seconds' => '秒',
+        'Sun' => '日',
+        'Mon' => '一',
+        'Tue' => '二',
+        'Wed' => '三',
+        'Thu' => '四',
+        'Fri' => '五',
+        'Sat' => '六',
+        'Su' => '日',
+        'Mo' => '一',
+        'Tu' => '二',
+        'We' => '三',
+        'Th' => '四',
+        'Fr' => '五',
+        'Sa' => '六',
+        'Sunday' => '星期日',
+        'Monday' => '星期一',
+        'Tuesday' => '星期二',
+        'Wednesday' => '星期三',
+        'Thursday' => '星期四',
+        'Friday' => '星期五',
+        'Saturday' => '星期六',
+        'Jan' => '一月',
+        'Feb' => '二月',
+        'Mar' => '三月',
+        'Apr' => '四月',
+        'May' => '五月',
+        'Jun' => '六月',
+        'Jul' => '七月',
+        'Aug' => '八月',
+        'Sep' => '九月',
+        'Oct' => '十月',
+        'Nov' => '十一月',
+        'Dec' => '十二月',
+        'January' => '一月',
+        'February' => '二月',
+        'March' => '三月',
+        'April' => '四月',
+        'May_l' => '五月',
+        'June' => '六月',
+        'July' => '七月',
+        'August' => '八月',
+        'September' => '九月',
+        'October' => '十月',
+        'November' => '十一月',
+        'December' => '十二月',
+        // IGNORE
+        ''=>''
+    );
+
 
     public function __construct()
     {
-        // $this->addon_path = PATH_THIRD . 'relative_time';
-        // include_once($this->addon_path . '/lang_ms.php');
-        // ee()->lang->loadfile('lang_ms');
-
 
         $string = ee()->TMPL->tagdata;
         $language = ee()->TMPL->fetch_param('language');
@@ -181,12 +249,15 @@ class Relative_time
         switch (ee()->TMPL->fetch_param('language')) {
             case "ms":
                 $string_replace = $this->lang_ms;
+                $strip_spaces = false;
                 break;
-            // case "zh":
-            //     $string_replace = $this->lang_zh;
-            //     break;
+            case "zh":
+                $string_replace = $this->lang_zh;
+                $strip_spaces = true;
+                break;
             default:
                 $string_replace = $this->lang_en;
+                $strip_spaces = false;
         }
     
 
@@ -197,6 +268,10 @@ class Relative_time
                 $string_replace[$search] :
                 $search;
             $string = str_replace($search, $replacement,$string);
+
+            if ($strip_spaces) {
+                $string = str_replace(' ', '',$string);                
+            }
         }
         $this->return_data = $string;
     }
